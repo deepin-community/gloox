@@ -1,0 +1,26 @@
+#!/usr/bin/make -f
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+%:
+	dh $@
+
+override_dh_clean:
+	rm -rf api
+	dh_clean
+
+override_dh_auto_build:
+	dh_auto_build
+	doxygen
+
+override_dh_auto_test:
+	dh_auto_test || echo "Ignoring test failures!"
+
+override_dh_install:
+	install -d -m 755 debian/libgloox-doc/usr/share/doc/libgloox-doc/html
+	cp -a api/* debian/libgloox-doc/usr/share/doc/libgloox-doc/html/
+	rm -f debian/libgloox-doc/usr/share/doc/libgloox-doc/html/*md5
+	dh_install
+
+override_dh_strip:
+	dh_strip --dbgsym-migration='libgloox-dbg (<< 1.0.24-1~)'

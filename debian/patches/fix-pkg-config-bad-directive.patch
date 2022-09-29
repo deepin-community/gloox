@@ -1,0 +1,17 @@
+From: Vincent Cheng <vcheng@debian.org>
+Date: Tue, 22 Jan 2019 02:06:40 +0100
+Subject: Fix the following lintian errors by removing unnecessary cflags parameters
+Forwarded: not-needed
+Last-Update: 2020-08-11
+
+E: libgloox-dev: pkg-config-bad-directive usr/lib/x86_64-linux-gnu/pkgconfig/gloox.pc -D_FORTIFY_SOURCE=2
+E: libgloox-dev: pkg-config-bad-directive usr/lib/x86_64-linux-gnu/pkgconfig/gloox.pc -Wdate-time
+
+--- a/gloox.pc.in
++++ b/gloox.pc.in
+@@ -7,4 +7,4 @@
+ Description: A high-level XMPP/Jabber library for C++
+ Version: @VERSION@
+ Libs: -L${libdir} -lgloox @LIBS@
+-Cflags: -I${includedir} @CPPFLAGS@
++Cflags: -I${includedir}
