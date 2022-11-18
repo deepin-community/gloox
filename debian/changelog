@@ -1,3 +1,9 @@
+gloox (1.0.24.1-deepin1) unstable; urgency=medium
+
+  * Fix build on RISC-V 
+
+ -- Gui-Yue <yuemeng.gui@gmail.com>  Fri, 18 Nov 2022 03:35:45 +0000
+
 gloox (1.0.24-2) unstable; urgency=medium
 
   * Upload to unstable.
