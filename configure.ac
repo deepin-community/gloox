@@ -2,7 +2,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.50)
-AC_INIT([gloox], [1.0.24], [js@camaya.net])
+AC_INIT([gloox], [1.0.27], [js@camaya.net])
 AC_CONFIG_SRCDIR(src/gloox.cpp)
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 
@@ -310,6 +310,18 @@ if test "x$debug" = "xyes"; then
 fi
 AC_MSG_CHECKING([whether to enable debug])
 AC_MSG_RESULT($debug)
+
+dnl WANT_XHTMLIM
+xhtmlim="no"
+AC_ARG_ENABLE( xhtmlim,
+               [AC_HELP_STRING([--enable-xhtmlim],
+                               [expose Tag's NodeList for internal XHTML-IM parsing [default=no]])],
+               [xhtmlim="yes"] )
+if test "x$xhtmlim" = "xyes"; then
+      CPPFLAGS="$CPPFLAGS -DWANT_XHTMLIM"
+fi
+AC_MSG_CHECKING([whether to enable xhtmlim])
+AC_MSG_RESULT($xhtmlim)
 
 dnl getaddrinfo
 getaddrinfo="yes"

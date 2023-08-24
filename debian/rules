@@ -22,5 +22,8 @@ override_dh_install:
 	rm -f debian/libgloox-doc/usr/share/doc/libgloox-doc/html/*md5
 	dh_install
 
+override_dh_missing:
+	dh_missing -Xlibgloox.la -Xgloox-config
+
 override_dh_strip:
 	dh_strip --dbgsym-migration='libgloox-dbg (<< 1.0.24-1~)'

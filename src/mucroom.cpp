@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006-2019 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2006-2023 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -619,9 +619,9 @@ namespace gloox
   MUCRoom::MUCRoom( ClientBase* parent, const JID& nick, MUCRoomHandler* mrh,
                     MUCRoomConfigHandler* mrch )
     : m_parent( parent ), m_nick( nick ), m_joined( false ), m_roomHandler( mrh ),
-      m_roomConfigHandler( mrch ), m_affiliation( AffiliationNone ), m_role( RoleNone ),
-      m_historyType( HistoryUnknown ), m_historyValue( 0 ), m_flags( 0 ),
-      m_creationInProgress( false ), m_configChanged( false ),
+      m_roomConfigHandler( mrch ), m_session( 0 ), m_affiliation( AffiliationNone ),
+      m_role( RoleNone ), m_historyType( HistoryUnknown ), m_historyValue( 0 ),
+      m_flags( 0 ), m_creationInProgress( false ), m_configChanged( false ),
       m_publishNick( false ), m_publish( false ), m_unique( false )
   {
     if( m_parent )
@@ -700,6 +700,12 @@ namespace gloox
   {
     if( m_session && m_joined )
       m_session->send( message );
+  }
+
+  void MUCRoom::send( const std::string& message, const std::string& subject, const StanzaExtensionList& sel )
+  {
+    if( m_session && m_joined )
+      m_session->send( message, subject, sel );
   }
 
   void MUCRoom::setSubject( const std::string& subject )

@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006-2019 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2006-2023 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -38,11 +38,29 @@ namespace gloox
 
   void MUCMessageSession::send( const std::string& message )
   {
-    Message m( Message::Groupchat, m_target, message );
+    send( message, EmptyString );
+  }
 
-//     decorate( m );
+  void MUCMessageSession::send( const std::string& message, const std::string& subject, const StanzaExtensionList& sel )
+  {
+    if( !m_hadMessages )
+    {
+      m_thread = "gloox" + m_parent->getID();
+      m_hadMessages = true;
+    }
 
-    m_parent->send( m );
+    Message m( Message::Groupchat, m_target.bare(), message, subject, m_thread );
+    m.setID( m_parent->getID() );
+    decorate( m );
+
+    if( sel.size() )
+    {
+      StanzaExtensionList::const_iterator it = sel.begin();
+      for( ; it != sel.end(); ++it )
+        m.addExtension( (*it));
+    }
+
+    MessageSession::send( m );
   }
 
   void MUCMessageSession::setSubject( const std::string& subject )

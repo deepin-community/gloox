@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2005-2019 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2005-2023 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -604,6 +604,9 @@ namespace gloox
         XPUnexpectedToken
       };
 
+#ifdef WANT_XHTMLIM
+    public:
+#endif
       enum NodeType
       {
         TypeTag,                    /**< The Node is a Tag. */
@@ -612,8 +615,8 @@ namespace gloox
 
       struct Node
       {
-        Node( NodeType _type, Tag* _tag ) : type( _type ), tag( _tag ) {}
-        Node( NodeType _type, std::string* _str ) : type( _type ), str( _str ) {}
+        Node( Tag* _tag ) : type( TypeTag ), tag( _tag ) {}
+        Node( std::string* _str ) : type( TypeString ), str( _str ) {}
         ~Node() {}
 
         NodeType type;
@@ -626,6 +629,21 @@ namespace gloox
 
       typedef std::list<Node*> NodeList;
 
+      /**
+       * Use this function to fetch a const list of child elements.
+       * The list includes both tags and cdata nodes, all in order. Use this if you want to render
+       * XHTML-IM content without passing raw XML to an external parser/renderer.
+       * @return A constant reference to the list of child elements.
+       */
+      const NodeList& nodes() const
+      {
+        static const NodeList empty;
+        return m_nodes ? *m_nodes : empty;
+      }
+
+#ifdef WANT_XHTMLIM
+    private:
+#endif
       Tag* m_parent;
       TagList* m_children;
       StringPList* m_cdata;

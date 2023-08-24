@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2005-2019 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2005-2023 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -76,7 +76,7 @@ namespace gloox
         const std::string& url = (*it)->findAttribute( "url" );
         const std::string& name = (*it)->findAttribute( "name" );
 
-        if( !url.empty() && !name.empty() )
+        if( !url.empty() )
         {
           BookmarkListItem item;
           item.url = url;
@@ -89,7 +89,7 @@ namespace gloox
         const std::string& jid = (*it)->findAttribute( "jid" );
         const std::string& name = (*it)->findAttribute( "name" );
 
-        if( !jid.empty() && !name.empty() )
+        if( !jid.empty() )
         {
           const std::string& join = (*it)->findAttribute( "autojoin" );
           ConferenceListItem item;

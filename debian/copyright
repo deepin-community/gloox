@@ -13,7 +13,7 @@ License: GPL-3.0+ with OpenSSL exception and zlib
 
 Files: debian/*
 Copyright: 2005-2010 Jose Carlos Garcia Sogo <jsogo@debian.org>
-           2014-2015 Vincent Cheng <vcheng@debian.org>
+           2014-2023 Vincent Cheng <vcheng@debian.org>
 License: GPL-3.0+ with OpenSSL exception
 
 License: GPL-3.0+ with OpenSSL exception

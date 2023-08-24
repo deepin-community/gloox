@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2005-2019 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2005-2023 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -87,22 +87,7 @@ namespace gloox
   {
     m_certInfo.status = CertOk;
 
-    const char* info;
-    info = gnutls_compression_get_name( gnutls_compression_get( *m_session ) );
-    if( info )
-      m_certInfo.compression = info;
-
-    info = gnutls_mac_get_name( gnutls_mac_get( *m_session ) );
-    if( info )
-      m_certInfo.mac = info;
-
-    info = gnutls_cipher_get_name( gnutls_cipher_get( *m_session ) );
-    if( info )
-      m_certInfo.cipher = info;
-
-    info = gnutls_protocol_get_name( gnutls_protocol_get_version( *m_session ) );
-    if( info )
-      m_certInfo.protocol = info;
+    getCommonCertInfo();
 
     m_valid = true;
   }

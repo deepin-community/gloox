@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2005-2019 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2005-2023 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -55,14 +55,13 @@ namespace gloox
     }
 
 #if GNUTLS_VERSION_NUMBER >= 0x020600
-    int ret = gnutls_priority_set_direct( *m_session, "SECURE128:+PFS:+COMP-ALL:+VERS-TLS-ALL:-VERS-SSL3.0:-VERS-TLS1.3:+SIGN-ALL:+CURVE-ALL", 0 );
+    int ret = gnutls_priority_set_direct( *m_session, "SECURE128:+PFS:+COMP-ALL:+VERS-TLS-ALL:-VERS-SSL3.0:+SIGN-ALL:+CURVE-ALL", 0 );
     if( ret != GNUTLS_E_SUCCESS )
       return false;
 #else
     const int protocolPriority[] = {
-#ifdef GNUTLS_TLS1_2
+      GNUTLS_TLS1_3,
       GNUTLS_TLS1_2,
-#endif
       GNUTLS_TLS1_1, GNUTLS_TLS1, 0 };
     const int kxPriority[]       = { GNUTLS_KX_RSA, GNUTLS_KX_DHE_RSA, GNUTLS_KX_DHE_DSS, 0 };
     const int cipherPriority[]   = { GNUTLS_CIPHER_AES_256_CBC, GNUTLS_CIPHER_AES_128_CBC,
@@ -178,22 +177,7 @@ namespace gloox
     gnutls_x509_crt_get_dn( cert[0], name, &nameSize );
     m_certInfo.server = name;
 
-    const char* info;
-    info = gnutls_compression_get_name( gnutls_compression_get( *m_session ) );
-    if( info )
-      m_certInfo.compression = info;
-
-    info = gnutls_mac_get_name( gnutls_mac_get( *m_session ) );
-    if( info )
-      m_certInfo.mac = info;
-
-    info = gnutls_cipher_get_name( gnutls_cipher_get( *m_session ) );
-    if( info )
-      m_certInfo.cipher = info;
-
-    info = gnutls_protocol_get_name( gnutls_protocol_get_version( *m_session ) );
-    if( info )
-      m_certInfo.protocol = info;
+    getCommonCertInfo();
 
     if( !gnutls_x509_crt_check_hostname( cert[0], m_server.c_str() ) )
       m_certInfo.status |= CertWrongPeer;

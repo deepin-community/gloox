@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2009-2019 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2009-2023 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -125,6 +125,9 @@ namespace gloox
   void OpenSSLBase::setCACerts( const StringList& cacerts )
   {
     m_cacerts = cacerts;
+
+    if( m_cacerts.empty() )
+      SSL_CTX_set_default_verify_paths( m_ctx );
 
     StringList::const_iterator it = m_cacerts.begin();
     for( ; it != m_cacerts.end(); ++it )
@@ -324,7 +327,7 @@ namespace gloox
       switch( SSL_SESSION_get_protocol_version( sess ) )
       {
         case TLS1_VERSION:
-          m_certInfo.protocol = "TLSv1";
+          m_certInfo.protocol = "TLSv1.0";
           break;
         case TLS1_1_VERSION:
           m_certInfo.protocol = "TLSv1.1";
@@ -332,11 +335,9 @@ namespace gloox
         case TLS1_2_VERSION:
           m_certInfo.protocol = "TLSv1.2";
           break;
-#ifdef TLS1_3_VERSION
         case TLS1_3_VERSION:
           m_certInfo.protocol = "TLSv1.3";
           break;
-#endif // TLS1_3_VERSION
         default:
           m_certInfo.protocol = "Unknown TLS version";
           break;

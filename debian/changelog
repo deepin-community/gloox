@@ -1,8 +1,19 @@
-gloox (1.0.24.1-deepin1) unstable; urgency=medium
+gloox (1.0.27-1) unstable; urgency=medium
 
-  * Fix build on RISC-V 
+  * New upstream release.
+    - Drop fix-ftbfs-gcc12-time.patch; applied upstream.
+  * Update (build-)depends on libidn11-dev -> libidn-dev.
+  * Update Standards version to 4.6.2.
 
- -- Gui-Yue <yuemeng.gui@gmail.com>  Fri, 18 Nov 2022 03:35:45 +0000
+ -- Vincent Cheng <vcheng@debian.org>  Sun, 16 Jul 2023 01:45:24 -0700
+
+gloox (1.0.24-3) unstable; urgency=medium
+
+  * Fix FTBFS with gcc 12. (Closes: #1016257)
+  * Update Standards version to 4.6.1.
+  * Update to dh compat level 13.
+
+ -- Vincent Cheng <vcheng@debian.org>  Sun, 07 Aug 2022 07:34:42 -0700
 
 gloox (1.0.24-2) unstable; urgency=medium
 

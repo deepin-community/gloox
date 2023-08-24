@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006-2019 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2006-2023 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -49,6 +49,7 @@ namespace gloox
        * @param message The message to send.
        */
       virtual void send( const std::string& message );
+      virtual void send( const std::string& message, const std::string& subject, const StanzaExtensionList& sel = StanzaExtensionList() );
 
       /**
        * Use this function to set a new room subject.
