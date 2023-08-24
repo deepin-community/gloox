@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006-2019 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2006-2023 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -411,6 +411,14 @@ namespace gloox
        * @param message The message to send.
        */
       void send( const std::string& message );
+
+      /**
+       * Sends a chat message to the room, including the given subject and list of StanzaExtensions.
+       * @param message The message's text/content
+       * @param subject The message's subject
+       * @param sel The list of StanzaExtensions to include.
+       */
+      void send( const std::string& message, const std::string& subject, const StanzaExtensionList& sel = StanzaExtensionList() );
 
       /**
        * Sets the subject of the room to the given string.

@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2005-2019 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2005-2023 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -433,7 +433,7 @@ namespace gloox
 
     m_children->push_back( child );
     child->m_parent = this;
-    m_nodes->push_back( new Node( TypeTag, child ) );
+    m_nodes->push_back( new Node( child ) );
   }
 
   void Tag::addChildCopy( const Tag* child )
@@ -490,7 +490,7 @@ namespace gloox
 
     std::string* str = new std::string( cdata );
     m_cdata->push_back( str );
-    m_nodes->push_back( new Node( TypeString, str ) );
+    m_nodes->push_back( new Node( str ) );
     return true;
   }
 

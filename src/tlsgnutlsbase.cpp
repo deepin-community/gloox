@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2005-2019 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2005-2023 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -73,17 +73,24 @@ namespace gloox
 
     int sum = 0;
     int ret = 0;
+    bool stop = false;
     do
     {
-      ret = static_cast<int>( gnutls_record_recv( *m_session, m_buf, m_bufsize ) );
+      if( ret == GNUTLS_E_AGAIN || ret == GNUTLS_E_INTERRUPTED)
+        stop = true;
+      else
+        stop = false;
 
+      ret = static_cast<int>( gnutls_record_recv( *m_session, m_buf, m_bufsize ) );
       if( ret > 0 && m_handler )
       {
         m_handler->handleDecryptedData( this, std::string( m_buf, ret ) );
         sum += ret;
       }
+      if( stop )
+        break;
     }
-    while( ret > 0 );
+    while( ret > 0 || ret == GNUTLS_E_AGAIN || ret == GNUTLS_E_INTERRUPTED );
 
     return sum;
   }
@@ -122,7 +129,6 @@ namespace gloox
     {
       gnutls_perror( ret );
       gnutls_db_remove_session( *m_session );
-      gnutls_deinit( *m_session );
       m_valid = false;
 
       m_handler->handleHandshakeResult( this, false, m_certInfo );
@@ -155,7 +161,13 @@ namespace gloox
 #ifdef HAVE_GNUTLS_SESSION_CHANNEL_BINDING
     gnutls_datum_t cb;
     int rc;
-    rc = gnutls_session_channel_binding( *m_session, GNUTLS_CB_TLS_UNIQUE, &cb );
+    rc = gnutls_session_channel_binding( *m_session,
+#ifdef GNUTLS_CB_TLS_EXPORTER
+                                         ( m_certInfo.protocol == "TLSv1.3" ) ? GNUTLS_CB_TLS_EXPORTER : GNUTLS_CB_TLS_UNIQUE,
+#else
+                                         GNUTLS_CB_TLS_UNIQUE,
+#endif
+                                         &cb );
     if( !rc )
       return std::string( reinterpret_cast<char*>( cb.data ), cb.size );
     else
@@ -195,6 +207,50 @@ namespace gloox
   ssize_t GnuTLSBase::pushFunc( gnutls_transport_ptr_t ptr, const void* data, size_t len )
   {
     return static_cast<GnuTLSBase*>( ptr )->pushFunc( data, len );
+  }
+
+  void GnuTLSBase::getCommonCertInfo()
+  {
+    const char* info;
+    info = gnutls_compression_get_name( gnutls_compression_get( *m_session ) );
+    if( info )
+      m_certInfo.compression = info;
+
+    info = gnutls_mac_get_name( gnutls_mac_get( *m_session ) );
+    if( info )
+      m_certInfo.mac = info;
+
+    info = gnutls_cipher_get_name( gnutls_cipher_get( *m_session ) );
+    if( info )
+      m_certInfo.cipher = info;
+
+    switch( gnutls_protocol_get_version( *m_session ) )
+    {
+      // case GNUTLS_SSL3:
+      //   m_certInfo.protocol = SSL3;
+      //   break;
+      case GNUTLS_TLS1_0:
+        m_certInfo.protocol = "TLSv1";
+        break;
+      case GNUTLS_TLS1_1:
+        m_certInfo.protocol = "TLSv1.1";
+        break;
+      case GNUTLS_TLS1_2:
+        m_certInfo.protocol = "TLSv1.2";
+        break;
+      case GNUTLS_TLS1_3:
+        m_certInfo.protocol = "TLSv1.3";
+        break;
+      case GNUTLS_DTLS1_0:
+        m_certInfo.protocol = "DTLSv1";
+        break;
+      case GNUTLS_DTLS1_2:
+        m_certInfo.protocol = "DTLSv1.2";
+        break;
+      default:
+        m_certInfo.protocol = "Unknown protocol";
+        break;
+    }
   }
 
 }

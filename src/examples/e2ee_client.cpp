@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2004-2019 by Jakob Schröter <js@camaya.net>
+ *  Copyright (c) 2004-2023 by Jakob Schröter <js@camaya.net>
  *  This file is part of the gloox library. http://camaya.net/gloox
  *
  *  This software is distributed under a license. The full license
@@ -27,6 +27,7 @@ using namespace gloox;
 #include <stdio.h>
 #include <locale.h>
 #include <string>
+#include <ctime>
 
 #include <cstdio> // [s]print[f]
 
@@ -116,7 +117,7 @@ class MessageTest : public ConnectionListener, LogHandler,
 
     virtual void handleEncryptedData( const TLSBase* /*base*/, const std::string& data )
     {
-      printf( "caching %d bytes of encrypted data\n", data.length() );
+      printf( "caching %ld bytes of encrypted data\n", data.length() );
       m_send += data;
     }
 
@@ -149,7 +150,7 @@ class MessageTest : public ConnectionListener, LogHandler,
       Tag *x = m->findChild( "xtls", "xmlns", "test:xtls" );
       if( x )
       {
-        printf( "decrypting: %d\n", x->cdata().length() );
+        printf( "decrypting: %ld\n", x->cdata().length() );
         m_tls->decrypt( Base64::decode64( x->cdata() ) );
         xtlsSend();
       }

@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2019 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2007-2023 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -76,6 +76,8 @@ namespace gloox
 
     protected:
       virtual void getCertInfo() {}
+
+      void getCommonCertInfo();
 
       gnutls_session_t* m_session;
 

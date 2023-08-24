@@ -3,14 +3,14 @@ Section: libs
 Priority: optional
 Maintainer: Vincent Cheng <vcheng@debian.org>
 Build-Depends:
- debhelper-compat (= 12),
+ debhelper-compat (= 13),
  doxygen,
  graphviz,
  gsfonts,
  libgnutls28-dev,
- libidn11-dev,
+ libidn-dev,
  zlib1g-dev
-Standards-Version: 4.5.0
+Standards-Version: 4.6.2
 Homepage: https://camaya.net/gloox/
 Vcs-Git: https://salsa.debian.org/debian/gloox.git
 Vcs-Browser: https://salsa.debian.org/debian/gloox
@@ -23,7 +23,7 @@ Multi-Arch: same
 Depends:
  libgloox18 (= ${binary:Version}),
  libgnutls28-dev,
- libidn11-dev,
+ libidn-dev,
  ${misc:Depends}
 Description: C++ jabber/xmpp library (devel)
  A C++ Jabber/XMPP library that takes care of low level protocol stuff.

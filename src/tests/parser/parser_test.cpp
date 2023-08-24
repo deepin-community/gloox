@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2004-2019 by Jakob Schröter <js@camaya.net>
+ *  Copyright (c) 2004-2023 by Jakob Schröter <js@camaya.net>
  *  This file is part of the gloox library. http://camaya.net/gloox
  *
  *  This software is distributed under a license. The full license
@@ -1238,7 +1238,7 @@ class ParserTest : private TagHandler
       if( ( i = p->feed( data ) ) >= 0 || !m_tag || m_tag->xmlns() != "def"
             || m_tag->xmlns( "xx" ) != "xyz" || m_tag->xmlns( "foo" ) != "ggg"
             || m_tag->attributes().size() != 4
-            || m_tag->attributes().front()->xmlns() != "def"
+            || m_tag->attributes().front()->value() != "def"
             || m_tag->xml() != data )
       {
         ++fail;
@@ -1256,7 +1256,7 @@ class ParserTest : private TagHandler
       if( ( i = p->feed( data ) ) >= 0 || !m_tag || m_tag->xmlns() != "ggg"
             || m_tag->xmlns( "xx" ) != "xyz" || m_tag->xmlns( "foo" ) != "ggg"
             || m_tag->attributes().size() != 4
-            || m_tag->attributes().front()->xmlns() != "def"
+            || m_tag->attributes().front()->value() != "def"
             || m_tag->xml() != data
             || m_tag->children().front()->xmlns() != "xyz"
             || m_tag->children().front()->children().front()->xmlns() != "ggg" )
@@ -1285,7 +1285,23 @@ class ParserTest : private TagHandler
 
 
 
+#ifdef WANT_XHTMLIM
+      //-------
+      name = "XHTML-IM 1";
+      data = "<html xmlns='http://jabber.org/protocol/xhtml-im'><body xmlns='http://www.w3.org/1999/xhtml'><p style='font-size:large'><em>Wow</em>, I&apos;m <span style='color:green'>green</span>with <strong>envy</strong>!</p></body></html>";
+      if( ( i = p->feed( data ) ) >= 0 || !m_tag
+            || m_tag->xml() != data )
+      {
+        ++fail;
+        fprintf( stderr, "test '%s' failed (%d)", name.c_str(), i );
+      }
+      const Tag* t = m_tag->findTag( "/html/body/p" );
+      if( !t || t->nodes().size() != 6 )
+        ++fail;
 
+      delete m_tag;
+      m_tag = 0;
+#endif
 
 
 

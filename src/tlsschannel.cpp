@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007-2019 by Jakob Schröter <js@camaya.net>
+ * Copyright (c) 2007-2023 by Jakob Schröter <js@camaya.net>
  * This file is part of the gloox library. http://camaya.net/gloox
  *
  * This software is distributed under a license. The full license
@@ -286,7 +286,7 @@ namespace gloox
     /* initialize TLS credential */
     memset( &tlscred, 0, sizeof( SCHANNEL_CRED ) );
     tlscred.dwVersion = SCHANNEL_CRED_VERSION;
-    tlscred.grbitEnabledProtocols = SP_PROT_TLS1;
+    tlscred.grbitEnabledProtocols = SP_PROT_TLS1_CLIENT | SP_PROT_TLS1_1_CLIENT | SP_PROT_TLS1_2_CLIENT | SP_PROT_TLS1_3_CLIENT;;
     /* acquire credentials */
     error = AcquireCredentialsHandle( 0,
                                       UNISP_NAME,
@@ -650,7 +650,16 @@ namespace gloox
       switch( conn_info.dwProtocol )
       {
         case SP_PROT_TLS1_CLIENT:
-          m_certInfo.protocol = "TLSv1";
+          m_certInfo.protocol = "TLSv1.0";
+          break;
+        case SP_PROT_TLS1_1_CLIENT:
+          m_certInfo.protocol = "TLSv1.1";
+          break;
+        case SP_PROT_TLS1_2_CLIENT:
+          m_certInfo.protocol = "TLSv1.2";
+          break;
+        case SP_PROT_TLS1_3_CLIENT:
+          m_certInfo.protocol = "TLSv1.3";
           break;
         case SP_PROT_SSL3_CLIENT:
           m_certInfo.protocol = "SSLv3";
