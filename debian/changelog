@@ -1,3 +1,9 @@
+gloox (1.0.28-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Vincent Cheng <vcheng@debian.org>  Fri, 24 Nov 2023 07:05:28 -0800
+
 gloox (1.0.27-1) unstable; urgency=medium
 
   * New upstream release.

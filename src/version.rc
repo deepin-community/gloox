@@ -2,8 +2,8 @@
 
 
 VS_VERSION_INFO VERSIONINFO
-  FILEVERSION    1,0,27,0
-  PRODUCTVERSION 1,0,27,0
+  FILEVERSION    1,0,28,0
+  PRODUCTVERSION 1,0,28,0
   FILEFLAGSMASK  VS_FFI_FILEFLAGSMASK
   FILEFLAGS      0
   FILEOS         VOS__WINDOWS32
@@ -15,8 +15,8 @@ VS_VERSION_INFO VERSIONINFO
         BEGIN
             VALUE "FileDescription", "gloox Jabber/XMPP library\0"
             VALUE "ProductName", "gloox Jabber/XMPP library\0"
-            VALUE "ProductVersion", "1.0.27\0"
-            VALUE "FileVersion", "1.0.27\0"
+            VALUE "ProductVersion", "1.0.28\0"
+            VALUE "FileVersion", "1.0.28\0"
             VALUE "InternalName", "gloox\0"
             VALUE "OriginalFilename", "gloox.dll\0"
             VALUE "CompanyName", "Jakob Schroeter\0"

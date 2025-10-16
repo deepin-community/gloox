@@ -88,6 +88,9 @@ namespace gloox
       virtual const std::string channelBinding() const;
 
       // reimplemented from TLSBase
+      virtual const std::string channelBindingType() const;
+
+      // reimplemented from TLSBase
       virtual void setCACerts( const StringList& cacerts );
 
       // reimplemented from TLSBase

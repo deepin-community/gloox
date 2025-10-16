@@ -136,6 +136,11 @@ namespace gloox
     return m_impl ? m_impl->channelBinding() : EmptyString;
   }
 
+  const std::string TLSDefault::channelBindingType() const
+  {
+    return m_impl ? m_impl->channelBindingType() : "tls-unique";
+  }
+
   void TLSDefault::setCACerts( const StringList& cacerts )
   {
     if( m_impl )
