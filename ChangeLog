@@ -1,3 +1,9 @@
+v1.0.28 -- 22 Nov 2023
+----------------------
+- fixed SASL SCRAM-SHA-1-PLUS (fixes #302)
+
+
+
 v1.0.27 -- 24 Apr 2023
 ----------------------
 Note: This release is not binary compatible with previous releases. It is source compatible.

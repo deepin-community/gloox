@@ -46,9 +46,31 @@ namespace gloox
 
   const std::string OpenSSLClient::channelBinding() const
   {
-    unsigned char* buf[128];
-    long res = SSL_get_finished( m_ssl, buf, 128 );
-    return std::string( reinterpret_cast<char*>( buf ), res );
+
+    if( SSL_version( m_ssl ) == TLS1_3_VERSION )
+    {
+      unsigned char buf[32];
+      const char* const label = "EXPORTER-Channel-Binding";
+      SSL_export_keying_material( m_ssl, buf, 32, label, strlen( label ), { 0 }, 1, 0 );
+      return std::string( reinterpret_cast<char* const>( buf ), 32 );
+    }
+    else
+    {
+      unsigned char* buf[128];
+      long res = SSL_get_finished( m_ssl, buf, 128 );
+      return std::string( reinterpret_cast<char*>( buf ), res );
+    }
+  }
+
+  const std::string OpenSSLClient::channelBindingType() const
+  {
+    if( SSL_version( m_ssl ) == TLS1_3_VERSION ) {
+      return "tls-exporter";
+    }
+    else
+    {
+      return "tls-unique";
+    }
   }
 
   int OpenSSLClient::handshakeFunction()

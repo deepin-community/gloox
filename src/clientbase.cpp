@@ -503,7 +503,7 @@ namespace gloox
         }
         else // SaslMechScramSha1Plus
         {
-          m_gs2Header = "p=tls-unique,";
+          m_gs2Header = "p=" + m_encryption->channelBindingType() + ",";
           a->addAttribute( "mechanism", "SCRAM-SHA-1-PLUS" );
         }
 

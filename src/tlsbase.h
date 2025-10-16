@@ -117,6 +117,12 @@ namespace gloox
       virtual const std::string channelBinding() const { return EmptyString; }
 
       /**
+       * Returns the type of channel binding to be used with SCRAM-SHA-1-PLUS.
+       * @return The channel binding type, @default is "tls-unique".
+       */
+      virtual const std::string channelBindingType() const { return "tls-unique"; }
+
+      /**
        * Use this function to set a number of trusted root CA certificates which shall be
        * used to verify a servers certificate.
        * @param cacerts A list of absolute paths to CA root certificate files in PEM format.
